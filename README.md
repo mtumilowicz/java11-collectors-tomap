@@ -40,6 +40,39 @@ In `CollectorsToMapTest` we show examples of above methods.
 
 # additional info
 We have two more methods to create maps:
-* `toUnmodifiableMap`
+* `toUnmodifiableMap`:
+    ```
+    public static <T, K, U>
+    Collector<T, ?, Map<K,U>> 
+    toUnmodifiableMap(Function<? super T, ? extends K> keyMapper,
+                      Function<? super T, ? extends U> valueMapper)
+    ```
+    ```
+    public static <T, K, U>
+    Collector<T, ?, Map<K,U>> 
+    toUnmodifiableMap(Function<? super T, ? extends K> keyMapper,
+                      Function<? super T, ? extends U> valueMapper,
+                      BinaryOperator<U> mergeFunction)    
+    ```
 * `toConcurrentMap`
-with same parameters as described above.
+    ```
+    public static <T, K, U>
+    Collector<T, ?, ConcurrentMap<K,U>> 
+    toConcurrentMap(Function<? super T, ? extends K> keyMapper,
+                    Function<? super T, ? extends U> valueMapper)
+    ```
+    ```
+    public static <T, K, U>
+    Collector<T, ?, ConcurrentMap<K,U>>
+    toConcurrentMap(Function<? super T, ? extends K> keyMapper,
+                    Function<? super T, ? extends U> valueMapper,
+                    BinaryOperator<U> mergeFunction)    
+    ```
+    ```
+    public static <T, K, U, M extends ConcurrentMap<K, U>>
+    Collector<T, ?, M> 
+    toConcurrentMap(Function<? super T, ? extends K> keyMapper,
+                    Function<? super T, ? extends U> valueMapper,
+                    BinaryOperator<U> mergeFunction,
+                    Supplier<M> mapFactory)
+    ```
