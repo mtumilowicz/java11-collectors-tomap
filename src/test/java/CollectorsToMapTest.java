@@ -10,62 +10,51 @@ import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 /**
  * Created by mtumilowicz on 2018-11-03.
  */
 public class CollectorsToMapTest {
+    
+    private final Person p1 = Person.builder()
+            .id(1)
+                .name("name1")
+                .build();
+    
+    private final Person p1_1 = Person.builder()
+            .id(1)
+            .name("name1_1")
+            .build();
+    
+    private final Person p2 = Person.builder()
+            .id(2)
+            .name("name2")
+            .build();
 
     @Test(expected = NullPointerException.class)
     public void null_valueMapper() {
-        var person = Person.builder()
-                .id(1)
-                .name("name")
-                .build();
-
-        Stream.of(person).collect(Collectors.toMap(Person::getName, null));
+        Stream.of(p1).collect(Collectors.toMap(Person::getName, null));
     }
 
     @Test(expected = NullPointerException.class)
     public void null_keyMapper() {
-        var person = Person.builder()
-                .id(1)
-                .name("name")
-                .build();
-
-        Stream.of(person).collect(Collectors.toMap(null, Person::getName));
+        Stream.of(p1).collect(Collectors.toMap(null, Person::getName));
     }
 
     @Test(expected = NullPointerException.class)
     public void valueMapper_returns_null() {
-        var person = Person.builder()
-                .id(1)
-                .name("name")
-                .build();
-
-        Stream.of(person).collect(Collectors.toMap(Person::getName, x -> null));
+        Stream.of(p1).collect(Collectors.toMap(Person::getName, x -> null));
     }
 
     @Test
     public void keyMapper_returns_null() {
-        var person = Person.builder()
-                .id(1)
-                .name("name")
-                .build();
-
-        Stream.of(person).collect(Collectors.toMap(x -> null, Person::getName));
+        Stream.of(p1).collect(Collectors.toMap(x -> null, Person::getName));
     }
 
     @Test(expected = IllegalStateException.class)
     public void key_value__same_keys() {
-        var persons = List.of(Person.builder()
-                        .id(1)
-                        .name("name1")
-                        .build(),
-                Person.builder()
-                        .id(1)
-                        .name("name2")
-                        .build());
+        var persons = List.of(p1, p1_1);
 
         /*
         message:
@@ -77,16 +66,6 @@ public class CollectorsToMapTest {
 
     @Test
     public void key_value__different_keys() {
-        var p1 = Person.builder()
-                .id(1)
-                .name("name1")
-                .build();
-
-        var p2 = Person.builder()
-                .id(2)
-                .name("name2")
-                .build();
-
         var persons = List.of(p1, p2);
 
         Map<Integer, Person> personMap = persons.stream()
@@ -99,59 +78,31 @@ public class CollectorsToMapTest {
 
     @Test
     public void key_value_mergeFunction_takeFirst__same_keys() {
-        var p1 = Person.builder()
-                .id(1)
-                .name("name1")
-                .build();
-
-        var p2 = Person.builder()
-                .id(1)
-                .name("name2")
-                .build();
-
-        var persons = List.of(p1, p2);
+        var persons = List.of(p1, p1_1);
 
         Map<Integer, Person> personMap = persons.stream()
                 .collect(Collectors.toMap(Person::getId, Function.identity(), (x, y) -> x));
 
         assertThat(personMap.size(), is(1));
         assertThat(personMap.get(1), is(p1));
+        assertThat(personMap.get(1), not(is(p1_1)));
     }
 
     @Test
     public void key_value_mergeFunction_takeLast__same_keys() {
-        var p1 = Person.builder()
-                .id(1)
-                .name("name1")
-                .build();
-
-        var p2 = Person.builder()
-                .id(1)
-                .name("name2")
-                .build();
-
-        var persons = List.of(p1, p2);
+        var persons = List.of(p1, p1_1);
 
         Map<Integer, Person> personMap = persons.stream()
                 .collect(Collectors.toMap(Person::getId, Function.identity(), (x, y) -> y));
 
         assertThat(personMap.size(), is(1));
-        assertThat(personMap.get(1), is(p2));
+        assertThat(personMap.get(1), is(p1_1));
+        assertThat(personMap.get(1), not(is(p1)));
     }
 
     @Test(expected = IllegalStateException.class)
     public void key_value_mergeFunction_exception__same_keys() {
-        var p1 = Person.builder()
-                .id(1)
-                .name("name1")
-                .build();
-
-        var p2 = Person.builder()
-                .id(1)
-                .name("name2")
-                .build();
-
-        var persons = List.of(p1, p2);
+        var persons = List.of(p1, p1_1);
 
         Map<Integer, Person> personMap = persons.stream()
                 .collect(Collectors.toMap(Person::getId,
@@ -159,23 +110,10 @@ public class CollectorsToMapTest {
                         (x, y) -> {
                             throw new IllegalStateException();
                         }));
-
-        assertThat(personMap.size(), is(1));
-        assertThat(personMap.get(1), is(p2));
     }
-
+    
     @Test
-    public void key_value_mergeFunction_exception__treeSet() {
-        var p1 = Person.builder()
-                .id(1)
-                .name("name1")
-                .build();
-
-        var p2 = Person.builder()
-                .id(2)
-                .name("name2")
-                .build();
-
+    public void key_value_mergeFunction_exception__treeSet__different_keys() {
         var persons = List.of(p1, p2);
 
         TreeMap<Integer, Person> personMap = persons.stream()
