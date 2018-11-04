@@ -3,14 +3,14 @@ The main goal of this project is to show `Collectors.toMap`
 functionality.
 
 # preface
-1. keyMapper, valueMapper
+1. keyMapper, valueMapper; default: `HashMap::new`
     ```
     public static <T, K, U>
         Collector<T, ?, Map<K,U>> toMap(
                                     Function<? super T, ? extends K> keyMapper,
                                     Function<? super T, ? extends U> valueMapper)
     ```
-1. keyMapper, valueMapper, mergeFunction
+1. keyMapper, valueMapper, mergeFunction; default: `HashMap::new`
     ```
     public static <T, K, U>
         Collector<T, ?, Map<K,U>> toMap(
@@ -40,7 +40,7 @@ In `CollectorsToMapTest` we show examples of above methods.
 
 # additional info
 We have two more methods to create maps:
-* `toUnmodifiableMap`:
+* `toUnmodifiableMap`
     ```
     public static <T, K, U>
     Collector<T, ?, Map<K,U>> 
@@ -54,7 +54,7 @@ We have two more methods to create maps:
                       Function<? super T, ? extends U> valueMapper,
                       BinaryOperator<U> mergeFunction)    
     ```
-* `toConcurrentMap`
+* `toConcurrentMap`, default: `ConcurrentHashMap::new`
     ```
     public static <T, K, U>
     Collector<T, ?, ConcurrentMap<K,U>> 
