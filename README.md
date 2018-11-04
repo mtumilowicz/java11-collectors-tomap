@@ -37,3 +37,9 @@ In `CollectorsToMapTest` we show examples of above methods.
 * same keys + 1. type -> `IllegalStateException`
 * examples of merge function (takeFirst, takeLast, exception if same)
 * valuable example of factoryMap with `TreeMap`
+
+# additional info
+We have two more methods to create maps:
+* `toUnmodifiableMap`
+* `toConcurrentMap`
+with same parameters as described above.
