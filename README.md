@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/mtumilowicz/java11-collectors-tomap.svg?branch=master)](https://travis-ci.com/mtumilowicz/java11-collectors-tomap)
+
 # java11-collectors-tomap
 The main goal of this project is to show `Collectors.toMap` 
 functionality.
