@@ -18,7 +18,7 @@ public class CollectorsToMapTest {
 
     @Test(expected = NullPointerException.class)
     public void null_valueMapper() {
-        Person person = Person.builder()
+        var person = Person.builder()
                 .id(1)
                 .name("name")
                 .build();
@@ -28,7 +28,7 @@ public class CollectorsToMapTest {
 
     @Test(expected = NullPointerException.class)
     public void null_keyMapper() {
-        Person person = Person.builder()
+        var person = Person.builder()
                 .id(1)
                 .name("name")
                 .build();
@@ -38,7 +38,7 @@ public class CollectorsToMapTest {
 
     @Test(expected = NullPointerException.class)
     public void valueMapper_returns_null() {
-        Person person = Person.builder()
+        var person = Person.builder()
                 .id(1)
                 .name("name")
                 .build();
@@ -48,7 +48,7 @@ public class CollectorsToMapTest {
 
     @Test
     public void keyMapper_returns_null() {
-        Person person = Person.builder()
+        var person = Person.builder()
                 .id(1)
                 .name("name")
                 .build();
@@ -58,7 +58,7 @@ public class CollectorsToMapTest {
 
     @Test(expected = IllegalStateException.class)
     public void key_value__same_keys() {
-        List<Person> persons = List.of(Person.builder()
+        var persons = List.of(Person.builder()
                         .id(1)
                         .name("name1")
                         .build(),
@@ -77,17 +77,17 @@ public class CollectorsToMapTest {
 
     @Test
     public void key_value__different_keys() {
-        Person p1 = Person.builder()
+        var p1 = Person.builder()
                 .id(1)
                 .name("name1")
                 .build();
 
-        Person p2 = Person.builder()
+        var p2 = Person.builder()
                 .id(2)
                 .name("name2")
                 .build();
 
-        List<Person> persons = List.of(p1, p2);
+        var persons = List.of(p1, p2);
 
         Map<Integer, Person> personMap = persons.stream()
                 .collect(Collectors.toMap(Person::getId, Function.identity()));
@@ -99,17 +99,17 @@ public class CollectorsToMapTest {
 
     @Test
     public void key_value_mergeFunction_takeFirst__same_keys() {
-        Person p1 = Person.builder()
+        var p1 = Person.builder()
                 .id(1)
                 .name("name1")
                 .build();
 
-        Person p2 = Person.builder()
+        var p2 = Person.builder()
                 .id(1)
                 .name("name2")
                 .build();
 
-        List<Person> persons = List.of(p1, p2);
+        var persons = List.of(p1, p2);
 
         Map<Integer, Person> personMap = persons.stream()
                 .collect(Collectors.toMap(Person::getId, Function.identity(), (x, y) -> x));
@@ -120,17 +120,17 @@ public class CollectorsToMapTest {
 
     @Test
     public void key_value_mergeFunction_takeLast__same_keys() {
-        Person p1 = Person.builder()
+        var p1 = Person.builder()
                 .id(1)
                 .name("name1")
                 .build();
 
-        Person p2 = Person.builder()
+        var p2 = Person.builder()
                 .id(1)
                 .name("name2")
                 .build();
 
-        List<Person> persons = List.of(p1, p2);
+        var persons = List.of(p1, p2);
 
         Map<Integer, Person> personMap = persons.stream()
                 .collect(Collectors.toMap(Person::getId, Function.identity(), (x, y) -> y));
@@ -141,17 +141,17 @@ public class CollectorsToMapTest {
 
     @Test(expected = IllegalStateException.class)
     public void key_value_mergeFunction_exception__same_keys() {
-        Person p1 = Person.builder()
+        var p1 = Person.builder()
                 .id(1)
                 .name("name1")
                 .build();
 
-        Person p2 = Person.builder()
+        var p2 = Person.builder()
                 .id(1)
                 .name("name2")
                 .build();
 
-        List<Person> persons = List.of(p1, p2);
+        var persons = List.of(p1, p2);
 
         Map<Integer, Person> personMap = persons.stream()
                 .collect(Collectors.toMap(Person::getId,
@@ -166,17 +166,17 @@ public class CollectorsToMapTest {
 
     @Test
     public void key_value_mergeFunction_exception__treeSet() {
-        Person p1 = Person.builder()
+        var p1 = Person.builder()
                 .id(1)
                 .name("name1")
                 .build();
 
-        Person p2 = Person.builder()
+        var p2 = Person.builder()
                 .id(2)
                 .name("name2")
                 .build();
 
-        List<Person> persons = List.of(p1, p2);
+        var persons = List.of(p1, p2);
 
         TreeMap<Integer, Person> personMap = persons.stream()
                 .collect(Collectors.toMap(Person::getId,
