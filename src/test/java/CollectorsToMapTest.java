@@ -104,7 +104,7 @@ public class CollectorsToMapTest {
     public void key_value_mergeFunction_exception__same_keys() {
         var persons = List.of(p1, p1_1);
 
-        Map<Integer, Person> personMap = persons.stream()
+        persons.stream()
                 .collect(Collectors.toMap(Person::getId,
                         Function.identity(),
                         (x, y) -> {
@@ -122,7 +122,7 @@ public class CollectorsToMapTest {
                         (x, y) -> {
                             throw new IllegalStateException();
                         },
-                        () -> new TreeMap<Integer, Person>(Comparator.comparingInt(Integer::intValue).reversed()))
+                        () -> new TreeMap<>(Comparator.reverseOrder()))
                 );
 
         assertThat(personMap.size(), is(2));
